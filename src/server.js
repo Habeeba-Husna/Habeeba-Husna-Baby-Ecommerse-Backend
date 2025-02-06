@@ -42,9 +42,9 @@ const PORT = process.env.PORT || 5000;
 //     console.log(`Server running on http://localhost:${PORT}`);
 // });
 
-mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })     //ensure that it can successfully connect to the database
     .then(() => {
         console.log('MongoDB Connected');
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));                // starts the Express server to handle incoming requests and routes
     })
     .catch(err => console.error(err));

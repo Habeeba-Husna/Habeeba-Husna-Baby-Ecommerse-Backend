@@ -8,8 +8,8 @@ import { upload } from "../config/cloudinaryConfig.js";
 export const addProduct = asyncHandler(async (req, res) => {
   const { name, ...rest } = req.body;
   let url
-  if (req.file && req.file.path) {
-      url = req.file.path;
+  if (req.file && req.file.path) {         //It checks if the image file uploaded
+      url = req.file.path;   // to save the product data/image url.
   } else {
       return res.status(400).json({
           success: STATUS.ERROR,
@@ -19,7 +19,7 @@ export const addProduct = asyncHandler(async (req, res) => {
 
  // Get image path if file exists
  
-  const data = await addProductionServices({ name,url, ...rest });
+  const data = await addProductionServices({ name,url, ...rest });         //to save the product data -services
   res.status(201).json({
     success: STATUS.SUCCESS,
     message: "Product added successfully.",
@@ -56,7 +56,7 @@ export const getAllProducts = asyncHandler(async (req, res) => {
   const { category, page = 1, limit = 10, search } = req.query;   //properties are extracted from req.query and assigned to variable
 
 
-  const { products, pagination } = await getAllProductsService({
+  const { products, pagination } = await getAllProductsService({                //to fetch the products, along with pagination details
     category,
     page: parseInt(page, 10),
     limit: parseInt(limit, 10),

@@ -33,6 +33,13 @@ const userSchema = new mongoose.Schema({
     }
 );
 
+const User = mongoose.model('User', userSchema);
+
+export default User;
+
+
+
+
 
 // // Pre-save hook to validate user data before saving to DB
 // userSchema.pre('save', async function (next) {
@@ -43,7 +50,3 @@ const userSchema = new mongoose.Schema({
 //         next();  // Proceed with save if validation passes
 //     }
 // });
-
-const User = mongoose.model('User', userSchema);
-
-export default User;

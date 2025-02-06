@@ -33,6 +33,14 @@ const productSchema = new mongoose.Schema({
   }
 });
 
+const Product = mongoose.model('Product', productSchema);
+
+export default Product;
+
+
+
+
+
 // // Pre-save hook to validate product data
 // productSchema.pre("save", function (next) {
 //   // Clone the document and remove internal Mongoose properties
@@ -49,7 +57,3 @@ const productSchema = new mongoose.Schema({
 //     next(); // Proceed with save if validation passes
 //   }
 // });
-
-const Product = mongoose.model('Product', productSchema);
-
-export default Product;

@@ -24,10 +24,10 @@ export const registerUser = asyncHandler(async (req, res) => {
 //login user controller
 
 export const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await loginUserServices(email, password);   //validate user email,passwrd using service
+  const { email, password } = req.body;   //extract
+  const user = await loginUserServices(email, password);   //check user exist  email,passwrd using service
 
-// if valid create tokens
+// if login success create tokens   
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
 

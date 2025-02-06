@@ -7,7 +7,6 @@ export const addOrderService = async (
   name,
   address,
   paymentMethod,
-  total,
   userId
 ) => {
 
@@ -18,6 +17,8 @@ export const addOrderService = async (
     );
   }
 
+  // Initialize the total to 0
+  let total = 0;
 
   // Create order
   const order = new Order({
@@ -27,7 +28,7 @@ export const addOrderService = async (
     name,
     address,
     paymentMethod,
-    total,
+    total,  // Set the total dynamically
   });
 
   for (let item of cart.products) {
@@ -42,13 +43,24 @@ export const addOrderService = async (
 
     product.quantity -= item.quantity;
     await product.save();
+
+    // Calculate the total for this item
+    const itemTotal = product.price * item.quantity;
+    total += itemTotal;
+
     order.items.push({ productId: item.product, quantity: item.quantity });
   }
 
+  // Now that total is calculated, save the order with the correct total
+  order.total = total;
   await order.save();
+
+  // Clear the cart
   cart.products = [];
   await cart.save();
 }
+
+
 
 export const showOrderService = async (userId, page = 1, limit = 10) => {
 

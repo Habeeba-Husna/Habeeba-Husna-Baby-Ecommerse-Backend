@@ -19,24 +19,50 @@ export const passwordValidator = [
     },
   ];
 
-// import Joi from 'joi';
 
-// // Custom password validation function for Joi
-// const passwordValidatorJoi = Joi.string()
-//   .min(8)
-//   .regex(/[A-Z]/)
-//   .regex(/[0-9]/)
-//   .message('Password must be at least 8 characters long, contain at least one uppercase letter, and one number.');
 
-// const userValidationSchema = Joi.object({
-//     username: Joi.string().required(),
-//     email: Joi.string().email().required(),
-//     password: passwordValidatorJoi.required(),
-//     name: Joi.string().required(),
-//     isAdmin: Joi.boolean().required(),
-//     isBlock: Joi.boolean().required()
+
+
+
+
+// import Joi from "joi";
+
+// // User Registration Schema
+// export const userValidationSchema = Joi.object({
+//   username: Joi.string().min(3).max(30).required(),
+//   email: Joi.string().email().required(),
+//   password: Joi.string()
+//     .min(8)
+//     .pattern(new RegExp("[A-Z]")) // At least one uppercase letter
+//     .pattern(new RegExp("[0-9]")) // At least one number
+//     .required(),
+//   name: Joi.string().min(3).max(50).required(),
+//   isAdmin: Joi.boolean().default(false),
+//   isBlock: Joi.boolean().default(false),
 // });
 
-// export const validateUser = (user) => {
-//     return userValidationSchema.validate(user);
+// // User Login Schema
+// export const loginValidationSchema = Joi.object({
+//   email: Joi.string().email().required(),
+//   password: Joi.string().required(),
+// });
+
+// // Product Validation Schema
+// export const productValidationSchema = Joi.object({
+//   name: Joi.string().min(3).max(50).required(),
+//   price: Joi.number().positive().required(),
+//   quantity: Joi.number().integer().min(0).required(),
+//   url: Joi.string().uri().required(),
+//   description: Joi.string().min(10).max(500).required(),
+//   category: Joi.string().min(3).max(50).required(),
+//   isDelete: Joi.boolean().default(false),
+// });
+
+// // Validation Middleware
+// export const validate = (schema) => (req, res, next) => {
+//   const { error } = schema.validate(req.body, { abortEarly: false });
+//   if (error) {
+//     return res.status(400).json({ errors: error.details.map((err) => err.message) });
+//   }
+//   next();
 // };

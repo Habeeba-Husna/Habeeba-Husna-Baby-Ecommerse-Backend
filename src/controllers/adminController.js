@@ -37,7 +37,7 @@ export const allUser = asyncHandler(async (req, res) => {
   });
 });
 
-//specific user
+//single user
 export const singleUser=asyncHandler(async(req,res)=>{
   const {id}=req.params
   const user=await singleUserServices(id)
@@ -50,7 +50,7 @@ export const orderDetails=asyncHandler(async(req,res)=>{
   res.json({status:STATUS.SUCCESS,message:"order list ...",order:orderList})
 })
 
-  //user list
+  //user count
   export const userCount=asyncHandler(async(req,res)=>{
     const {  totalUsers } = await getAllUserServices(10, 1);
     const message = totalUsers ? "User list" : "No users found";

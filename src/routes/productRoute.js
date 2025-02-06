@@ -12,7 +12,7 @@ router.get('/', getAllProducts);
 router.get('/:id', singleProduct);
 
 // Admin Routes
-router.post('/addProduct',authenticate,isAdmin,upload.single('url'),addProduct);
+router.post('/addProduct',authenticate,isAdmin,upload.single('image'),addProduct);     //ivide upload with the field name -image/url adhavanam req kodukkendadh addproduct timel postman
 router.delete('/deleteProduct/:id',authenticate,isAdmin,deleteProduct);
 router.put('/updateProduct',authenticate,isAdmin,updateProduct);
 

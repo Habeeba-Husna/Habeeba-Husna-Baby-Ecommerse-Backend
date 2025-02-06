@@ -15,6 +15,13 @@ const wishlistSchema = new mongoose.Schema({
   ],
 });
 
+const Wishlist = mongoose.model("Wishlist", wishlistSchema);
+export default Wishlist;
+
+
+
+
+
 // // Pre-save hook to validate wishlist data
 // wishlistSchema.pre("save", function (next) {
 //   const { error } = validateWishlist(this); // Validate using Joi
@@ -24,6 +31,3 @@ const wishlistSchema = new mongoose.Schema({
 //     next(); // Proceed with save if validation passes
 //   }
 // });
-
-const Wishlist = mongoose.model("Wishlist", wishlistSchema);
-export default Wishlist;

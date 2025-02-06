@@ -25,7 +25,8 @@ export const updateProductService=async(_id,updateItems)=>{
       throw new CustomError('product is unavailable',400)
   }
 
-  const data=await Product.findByIdAndUpdate({_id,isDelete:false},{ $set:{...updateItems}},{new:true})
+  const data=await Product.findByIdAndUpdate({_id,isDelete:false},{ $set:{...updateItems}},{new:true})  
+  //{new:true} -ensures that the function returns the updated document, not the old one
   return data
 }
 
@@ -40,7 +41,7 @@ export const deleteProductService=async(productId)=>{
   }
 
   return await Product.findByIdAndUpdate(
-      productId,{isDelete:true},{new:true}
+      productId,{isDelete:true},{new:true}       //Soft Delete the Product
   )
 }
 
@@ -49,7 +50,7 @@ export const deleteProductService=async(productId)=>{
 export const getAllProductsService = async ({ category, page = 1, limit = 10, search }) => {
   const query = { isDelete: false };
 
-  if (category) {
+  if (category) {     //If a category is provided in the request
     query.category = { $regex: `^${category}$`, $options: "i" };
   }
 
@@ -61,9 +62,10 @@ export const getAllProductsService = async ({ category, page = 1, limit = 10, se
   }
   // console.log("Query:", query);
 
-  const skip = (page - 1) * limit;        // pagination
+  const skip = (page - 1) * limit;        //  calculates how many documents to skip
   const total = await Product.countDocuments(query);   //total product count
-  const products = await Product.find(query).skip(skip).limit(limit);
+  const products = await Product.find(query).skip(skip).limit(limit);    // query to find the products that match the conditions (query)
+
 
   return {
     products,

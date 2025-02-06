@@ -1,6 +1,6 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import { STATUS } from "../utils/constants.js";
-import { userBlockService ,getAllUserServices,singleUserServices,getAllOrderServices,getGrossProfitServices} from "../service/adminService.js";
+import { userBlockService ,getAllUserServices,singleUserServices,getAllOrderServices,getGrossProfitServices,getTotalProductsPurchasedServices} from "../service/adminService.js";
 
 //user blocking
 
@@ -63,3 +63,12 @@ export const grossProfit=asyncHandler(async(req,res)=>{
   const total=totalprofit.length>0?totalprofit[0].totalRevenue:0
   res.json({status:STATUS.SUCCESS,message:"total revenue ",total})
 })
+
+// get total products purchased
+export const totalProductsPurchased = asyncHandler(async (req, res) => {
+  const totalProducts = await getTotalProductsPurchasedServices();
+  const total = totalProducts.length > 0 ? totalProducts[0].totalProductsPurchased : 0;
+  res.json({ status: STATUS.SUCCESS, message: "Total products purchased", total });
+});
+
+

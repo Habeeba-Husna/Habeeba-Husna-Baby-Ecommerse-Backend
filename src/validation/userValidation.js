@@ -18,3 +18,25 @@ export const passwordValidator = [
       message: "Password must contain at least one number.",
     },
   ];
+
+// import Joi from 'joi';
+
+// // Custom password validation function for Joi
+// const passwordValidatorJoi = Joi.string()
+//   .min(8)
+//   .regex(/[A-Z]/)
+//   .regex(/[0-9]/)
+//   .message('Password must be at least 8 characters long, contain at least one uppercase letter, and one number.');
+
+// const userValidationSchema = Joi.object({
+//     username: Joi.string().required(),
+//     email: Joi.string().email().required(),
+//     password: passwordValidatorJoi.required(),
+//     name: Joi.string().required(),
+//     isAdmin: Joi.boolean().required(),
+//     isBlock: Joi.boolean().required()
+// });
+
+// export const validateUser = (user) => {
+//     return userValidationSchema.validate(user);
+// };

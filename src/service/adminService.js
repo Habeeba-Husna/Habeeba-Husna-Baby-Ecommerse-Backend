@@ -45,3 +45,16 @@ export const getGrossProfitServices = async () => {
   const result = await Order.aggregate([{$group:{_id:null,totalRevenue:{$sum:"$total"}}}])
   return result;
 };
+
+// get total products purchased
+
+export const getTotalProductsPurchasedServices = async () => {
+  const result = await Order.aggregate([
+    { $unwind: "$items" },                                          //Unwind the products array to count each product separately
+    { $group: { _id: null, totalProductsPurchased: { $sum: "$items.quantity" } } }
+  ]);
+  return result;
+  // return result.length > 0 ? result : [{ totalProductsPurchased: 0 }];
+};
+
+

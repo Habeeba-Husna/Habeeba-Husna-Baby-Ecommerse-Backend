@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 import connectDB from './config/dbConfig.js';
 import userRoute from './routes/userRoute.js';
 import productRoute from './routes/productRoute.js';
@@ -19,25 +19,32 @@ connectDB();
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cookieParser());       //  parse cookies into req.cookies
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());                                   //  parse cookies into req.cookies
 
 app.use('/api/auth', userRoute);
-app.use('/api', productRoute);
-app.use('/cart', cartRoute);
-app.use('/wishlist', wishlistRoute);
-app.use('/orders', orderRoute);
-app.use('/admin',adminRoute);
+app.use('/api/products', productRoute);
+app.use('/api/cart', cartRoute);
+app.use('/api/wishlist', wishlistRoute);
+app.use('/api/orders', orderRoute);
+app.use('/api/admin',adminRoute);
 
-// app.use(errorHandler)
-// app.get('/', (req, res) => {
-//     res.send('E-commerce Backend is up and running!');
-// });
+app.use(errorHandler)
+
+app.get('/', (req, res) => {
+    res.send('E-commerce Backend is up and running!');
+});
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server running on http://localhost:${PORT}`);
+// });
+
+mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('MongoDB Connected');
+        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    })
+    .catch(err => console.error(err));

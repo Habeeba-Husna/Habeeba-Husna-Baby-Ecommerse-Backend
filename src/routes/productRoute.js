@@ -6,12 +6,15 @@ import { upload } from '../config/cloudinaryConfig.js';
 
 const router=express.Router()
 
-// router.post('/addProduct',addProduct)
-router.get('/products', getAllProducts);
-router.get('/products/:id', singleProduct);
+// Public Routes
 
-router.post('/admin/addProduct',authenticate,isAdmin,upload.single('url'),addProduct);
-router.delete('/admin/deleteProduct/:id',authenticate,isAdmin,deleteProduct);
-router.put('/admin/updateProduct',authenticate,isAdmin,updateProduct);
+router.get('/', getAllProducts);
+router.get('/:id', singleProduct);
+
+// Admin Routes
+router.post('/addProduct',authenticate,isAdmin,upload.single('url'),addProduct);
+router.delete('/deleteProduct/:id',authenticate,isAdmin,deleteProduct);
+router.put('/updateProduct',authenticate,isAdmin,updateProduct);
+
 
 export default router;

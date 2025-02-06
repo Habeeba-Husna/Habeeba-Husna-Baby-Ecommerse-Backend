@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+// import { validateOrder } from "../validation/orderValidation.js";
 
 const orderSchema = new mongoose.Schema(
   {
@@ -48,6 +49,16 @@ const orderSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// // Pre-save hook to validate order data
+// orderSchema.pre("save", function (next) {
+//   const { error } = validateOrder(this); // Validate using Joi
+//   if (error) {
+//     next(new Error(`Validation failed: ${error.details.map(d => d.message).join(", ")}`));
+//   } else {
+//     next(); // Proceed with save if validation passes
+//   }
+// });
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;

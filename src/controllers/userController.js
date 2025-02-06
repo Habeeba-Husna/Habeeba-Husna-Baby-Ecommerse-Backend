@@ -7,7 +7,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 // Register User Controller
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const data = req.body;     //get user detail from req.body
+  const data = req.body;                //get user detail from req.body
   await userRegisterServices(data);     //save infrmtn using service
 
   res.status(201).json({
@@ -57,17 +57,17 @@ export const refreshToken = asyncHandler(async (req, res) => {
   }
 
   const decoded = verifyToken(refreshToken, process.env.JWT_REFRESH_SECRET);     //Validate the refresh token using verifyToken.
-  // console.log("Decoded Token:", decoded);
-  if (!decoded) {                            //If token is invalid or expired
+  // console.log("Decoded Token:", decoded); 
+  if (!decoded) {                                                                //If token is invalid or expired
     throw new CustomError('Invalid or expired refresh token', 403);
   }
 
-  const user = await user.findById(decoded.id);  //issue cheyyumbol refreshTokenl store cheydha userid 
+  const user = await user.findById(decoded.id);                                  //issue cheyyumbol refreshTokenl store cheydha userid 
   if (!user) {
     throw new CustomError('User not found', 404);
   }
 
-  const newAccessToken = generateAccessToken(user);  //user found new access token generate
+  const newAccessToken = generateAccessToken(user);                              //user found new access token generate
   res
     .cookie('accessToken', newAccessToken, { httpOnly: true, secure: false, maxAge: 15 * 60 * 1000 })
     .status(200).json({

@@ -16,7 +16,9 @@ export const addProduct = asyncHandler(async (req, res) => {
           message: 'Image upload failed. Please include a valid image file.',
       });
   }
+
  // Get image path if file exists
+ 
   const data = await addProductionServices({ name,url, ...rest });
   res.status(201).json({
     success: STATUS.SUCCESS,

@@ -2,11 +2,11 @@ import { getAllProductsService, getProductByIdService ,addProductionServices,upd
 import { STATUS } from "../utils/constants.js";
 import CustomError from "../utils/customError.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
-import { upload } from "../config/cloudinaryConfig.js";
+import Product from "../models/productModel.js";
 
 //add product
 export const addProduct = asyncHandler(async (req, res) => {
-  const { name, ...rest } = req.body;
+  // const { name, ...rest } = req.body;
   let url
   if (req.file && req.file.path) {         //It checks if the image file uploaded
       url = req.file.path;   // to save the product data/image url.
@@ -17,9 +17,12 @@ export const addProduct = asyncHandler(async (req, res) => {
       });
   }
 
+  const { name, description, category, price, quantity, isDelete } = req.body;
  // Get image path if file exists
  
-  const data = await addProductionServices({ name,url, ...rest });         //to save the product data -services
+  // const data = await addProductionServices({ name,url, ...rest });         //to save the product data -services
+  
+  const data = await addProductionServices({name,description,category,price,quantity,isDelete,url,});
   res.status(201).json({
     success: STATUS.SUCCESS,
     message: "Product added successfully.",
@@ -29,11 +32,28 @@ export const addProduct = asyncHandler(async (req, res) => {
 
 //update Product
 export const updateProduct=asyncHandler(async(req,res)=>{
-  const {_id,...updateItems}=req.body
+  const {_id,url,...updateItems}=req.body
   // console.log(_id)
   if(!_id){
-      throw new CustomError('Product is not found')
+      throw new CustomError('Product ID is required", 400')
   }
+
+  const existingProduct = await Product.findById(_id);
+  if (!existingProduct) {
+    throw new CustomError("Product not found", 404);
+  }
+
+  // Handle URL case
+  if (url && !/^https?:\/\/[^\s]+$/.test(url)) {
+    return res.status(400).json({ errors: ["The provided 'url' is not a valid URI."] });
+  }
+
+  // If no URL is provided, use the existing one
+  if (!url) {
+    updateItems.url = existingProduct.url; // Retain the existing URL
+  }
+
+
   const updateProduct=await updateProductService(_id,updateItems)
   res.status(200).json({status:STATUS.SUCCESS,message:'Product updated successfully',updateProduct})
 })
@@ -90,4 +110,9 @@ export const singleProduct = asyncHandler(async (req, res) => {
     productOne,
   });
 });
+
+
+
+
+
 

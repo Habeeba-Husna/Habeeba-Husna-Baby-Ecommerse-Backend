@@ -10,10 +10,10 @@ import CustomError from "../utils/customError.js";
       throw new CustomError("user not found", 400);
     }
     userDetails.isBlock = !userDetails.isBlock;      //if user found block aanengil unblock aakkum illel vice versa
-    await userDetails.save();
+    await userDetails.save({ validateBeforeSave: false });
     return userDetails;
   };
-
+ 
   //get all user-non-admin users 
 
 export const getAllUserServices = async (limit, skip) => {

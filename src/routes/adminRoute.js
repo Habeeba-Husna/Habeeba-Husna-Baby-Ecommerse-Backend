@@ -3,6 +3,7 @@ import authenticate from '../middlewares/authMiddleware.js'
 import isAdmin from '../middlewares/isAdmin.js'
 import { allUser, singleUser, userBlock ,orderDetails,userCount,grossProfit,totalProductsPurchased } from '../controllers/adminController.js'
 
+
 const router=express.Router()
 
 router.put('/blockUser/:id',authenticate,isAdmin,userBlock)

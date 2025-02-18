@@ -3,20 +3,21 @@ import { generateAccessToken, generateRefreshToken, verifyToken } from '../utils
 import { STATUS } from '../utils/constants.js'
 import { userRegisterServices, loginUserServices } from "../service/userService.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
+import User from '../models/userModel.js';
 
 // Register User Controller
 
 export const registerUser = asyncHandler(async (req, res) => {
   const data = req.body;                //get user detail from req.body
-  await userRegisterServices(data);     //save infrmtn using service
+  const newUser=await userRegisterServices(data);     //save infrmtn using service
 
   res.status(201).json({
     status: STATUS.SUCCESS,
     message: 'User registered successfully',
     user: {
-      id: data._id,
-      username: data.username,
-      email: data.email,
+      id: newUser._id,
+      username: newUser.username,
+      email: newUser.email,
     }
   });
 });
@@ -34,8 +35,12 @@ export const loginUser = asyncHandler(async (req, res) => {
   // Set cookies in the response  store token in cookies
 
   res
-    .cookie('accessToken', accessToken, { httpOnly: true, secure: false, maxAge: 15 * 60 * 1000, path: '/' })   //res.cookie(name, value, options(expiration, security))
-    .cookie('refreshToken', refreshToken, { httpOnly: true, secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 })
+    // .cookie('accessToken', accessToken, { httpOnly: true, secure: false, maxAge: 15 * 60 * 1000, path: '/' })   //res.cookie(name, value, options(expiration, security))
+    // .cookie('refreshToken', refreshToken, { httpOnly: true, secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 })
+
+
+    .cookie('accessToken', accessToken, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "Strict", maxAge: 15 * 60 * 1000 })  
+    .cookie('refreshToken', refreshToken, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "Strict", maxAge: 7 * 24 * 60 * 60 * 1000 })
 
     .status(200).json({
       status: STATUS.SUCCESS,
@@ -69,7 +74,9 @@ export const refreshToken = asyncHandler(async (req, res) => {
 
   const newAccessToken = generateAccessToken(user);                              //user found new access token generate
   res
-    .cookie('accessToken', newAccessToken, { httpOnly: true, secure: false, maxAge: 15 * 60 * 1000 })
+    // .cookie('accessToken', newAccessToken, { httpOnly: true, secure: false, maxAge: 15 * 60 * 1000 })
+    .cookie('accessToken', newAccessToken, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "Strict", maxAge: 15 * 60 * 1000 })
+
     .status(200).json({
       status: STATUS.SUCCESS,
       message: 'Access token refreshed',

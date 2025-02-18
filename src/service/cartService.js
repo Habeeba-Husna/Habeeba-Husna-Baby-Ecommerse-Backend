@@ -2,8 +2,11 @@ import Product from "../models/productModel.js";
 import Cart from "../models/cartModel.js";
 import CustomError from "../utils/customError.js";
 
-//add to cart
+//add to cart 
 export const addProductToCart = async (productId, userId) => {
+    if (!userId) {
+        throw new CustomError("User authentication failed", 401);
+    }
     const existingProduct = await Product.findById(productId) 
     if (!existingProduct)
         throw CustomError("product is not found", 401)
@@ -11,13 +14,14 @@ export const addProductToCart = async (productId, userId) => {
     let cart = await Cart.findOne({ user: userId })  
     if (!cart) {
         cart = new Cart({ user: userId, products: [] });
+        await cart.save();
     }
 
     const existingIndex = cart.products.findIndex((item) => item.product.toString() === productId)
     if (existingIndex > -1) {                                                                                // product is already in the cart
         const currentQuantity = cart.products[existingIndex].quantity;
         if (currentQuantity + 1 > existingProduct.quantity) {
-            throw new CustomError("You cannot add the product to the cart. Insufficient stock.", 400)
+            throw new CustomError("Insufficient stock. Cannot add more to the cart.", 400)
         }
         cart.products[existingIndex].quantity += 1
         await cart.save();
@@ -32,6 +36,7 @@ export const addProductToCart = async (productId, userId) => {
 
 export const getUserCart = async (userId) => {
     const cart = await Cart.findOne({ user: userId }).populate("products.product");
+    
     return cart
 }
 

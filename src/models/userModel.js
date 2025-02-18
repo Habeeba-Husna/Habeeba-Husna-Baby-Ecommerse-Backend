@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { passwordValidator } from '../validation/userValidation.js';
+// import { passwordValidator } from '../validation/userValidation.js';
 // import { validateUser } from '../validation/userValidation.js';
 
 
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        validate: passwordValidator
+        // validate: passwordValidator
     },
     name: {
         type: String,
@@ -36,17 +36,3 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 export default User;
-
-
-
-
-
-// // Pre-save hook to validate user data before saving to DB
-// userSchema.pre('save', async function (next) {
-//     const { error } = validateUser(this);  // Validate using Joi before saving
-//     if (error) {
-//         next(new Error(`Validation failed: ${error.details[0].message}`));  // Pass Joi error message to next()
-//     } else {
-//         next();  // Proceed with save if validation passes
-//     }
-// });

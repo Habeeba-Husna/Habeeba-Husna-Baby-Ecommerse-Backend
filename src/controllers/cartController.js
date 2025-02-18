@@ -8,6 +8,9 @@ import mongoose from 'mongoose';
 export const addToCart = asyncHandler(async (req, res) => {
   const { productId} = req.params;
   const userId=req.user._id              //get uniqueID from authentication middleware. 
+  if (!productId) {
+    return res.status(400).json({ error: '"productId" is required' });
+  }
   await addProductToCart(productId, userId);
   res.json({ status: STATUS.SUCCESS, message:"Product added successfully to cart."});
 });
@@ -100,3 +103,6 @@ export const decrementProductQuantity = asyncHandler(async (req, res) => {
     res.json({ status: STATUS.SUCCESS, message: "Product removed from cart" });
   }
 });
+
+
+

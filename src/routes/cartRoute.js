@@ -1,10 +1,12 @@
 import express from 'express'
 import {addToCart,getCart,removeFromCart,incrementProductQuantity,decrementProductQuantity} from '../controllers/cartController.js'
 import authenticate from '../middlewares/authMiddleware.js';
+import { validateParams } from '../validation/validation.js';
+import { cartValidationSchema } from '../validation/validation.js';
 
 const router = express.Router();
 
-router.post('/addToCart/:productId',authenticate,addToCart);
+router.post('/addToCart/:productId',authenticate,validateParams(cartValidationSchema),addToCart);
 router.get('/getCart',authenticate,getCart);
 router.delete('/removeFromCart/:productId',authenticate,removeFromCart);
 
